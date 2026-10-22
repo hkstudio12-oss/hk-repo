@@ -7,10 +7,10 @@ import html
 import json
 import sys
 
-FIX = {2: "penyapu", 7: "hangpa", 17: "hangpa", 19: "dok", 20: "buat.", 24: "pulak,",
-       28: "tercabut!", 29: "dok", 30: "buat-", 31: "buat,", 33: "hangpa", 34: "pulak",
+FIX = {2: "penyapu", 7: "hangpa", 17: "hangpa", 19: "dok", 20: "biaq.", 21: "Pi", 24: "pulak,",
+       28: "tercabut!", 29: "dok", 30: "biaq", 31: "biaq,", 33: "hangpa", 34: "pulak",
        36: "Hangpa", 38: "la", 47: "pakej,", 67: "hangpa", 72: "naikkan", 80: "hangpa", 82: "hangpa",
-       13: "tak", 14: "tau", 45: "macam-", 46: "macam", 32: "peranakan"}
+       13: "taktau", 14: None, 16: "habaq,", 45: "macam-", 46: "macam", 32: "peranakan"}
 GROUPS = [[7, 8, 9], [10, 11, 12], [13, 14, 15, 16], [17, 18, 19, 20], [21, 22, 23, 24],
           [25, 26, 27, 28], [29, 30, 31, 32], [33, 34, 35], [36, 37, 38, 39],
           [43, 44, 45, 46, 47], [48, 49, 50, 51], [52, 53], [54, 55, 56, 57],
@@ -31,6 +31,8 @@ for gi, g in enumerate(GROUPS):
     spans = []
     for i in g:
         text = FIX.get(i, words[i]["w"].strip().lstrip("-"))
+        if text is None:
+            continue
         if i == 45:
             text = "macam-"
         cls = "w gold" if i in GOLD else "w red" if i in RED else "w"
