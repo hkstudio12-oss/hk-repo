@@ -1,0 +1,44 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    #brand-bg { position: absolute; inset: 0;
+      background: radial-gradient(90% 60% at 50% 42%, #1B6248 0%, #0E3B2C 50%, #061B13 100%); }
+    #brand-ring { position: absolute; left: 50%; top: 680px; width: 700px; height: 700px; margin: -350px 0 0 -350px;
+      border-radius: 50%; border: 2px solid rgba(226,184,75,.55); }
+    #brand-logo { position: absolute; left: 50%; top: 680px; width: 560px; height: 560px; margin: -280px 0 0 -280px;
+      border-radius: 50%; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,.6), 0 0 80px rgba(226,184,75,.25); }
+    #brand-logo img { width: 112%; height: 112%; margin: -6%; object-fit: cover; }
+    #brand-shine { position: absolute; top: -20%; left: -40%; width: 18%; height: 140%;
+      background: linear-gradient(100deg, rgba(255,255,255,0) 0%, rgba(255,240,200,.35) 50%, rgba(255,255,255,0) 100%); }
+    #brand-copy { position: absolute; left: 0; right: 0; top: 990px; text-align: center; font-family: "Montserrat", sans-serif; }
+    #brand-kicker { color: #E2B84B; font-weight: 700; font-size: 34px; letter-spacing: 10px; }
+    #brand-name { margin-top: 10px; color: #fff; font-family: "Playfair Display", serif; font-weight: 700; font-size: 60px; letter-spacing: 1px; }
+  </style>
+  <div id="root" data-composition-id="brand" data-width="1080" data-height="1920">
+    <div id="brand-bg" class="clip" data-start="0" data-duration="2.3" data-track-index="0"></div>
+    <div id="brand-ring" class="clip" data-start="0" data-duration="2.3" data-track-index="1"></div>
+    <div id="brand-logo" class="clip" data-start="0" data-duration="2.3" data-track-index="2">
+      <img src="assets/img/logo.jpg" alt="Al Mukmin Therapy" />
+      <div id="brand-shine"></div>
+    </div>
+    <div id="brand-copy" class="clip" data-start="0" data-duration="2.3" data-track-index="3">
+      <div id="brand-kicker">PUSAT TERAPI &amp; URUTAN</div>
+      <div id="brand-name" data-var-text="brandName">Terapi Al Mukmin</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // colour flood to brand green, logo lands on "Terapi Al Mukmin"
+    tl.fromTo("#brand-bg", { clipPath: "circle(0% at 50% 40%)" }, { clipPath: "circle(120% at 50% 40%)", duration: 0.45, ease: "power2.inOut" }, 0);
+    tl.fromTo("#brand-logo", { scale: 0.4, opacity: 0, rotation: -25 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: "back.out(1.4)" }, 0.22);
+    tl.fromTo("#brand-ring", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.7, ease: "expo.out" }, 0.35);
+    tl.fromTo("#brand-shine", { x: 0 }, { x: 1100, duration: 0.7, ease: "power2.inOut" }, 0.85);
+    tl.fromTo("#brand-kicker", { opacity: 0, scaleX: 1.25 }, { opacity: 1, scaleX: 1, duration: 0.5, ease: "expo.out" }, 0.4);
+    tl.fromTo("#brand-name", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.82);
+    // exit: logo zooms through
+    tl.to("#brand-logo", { scale: 2.6, opacity: 0, duration: 0.3, ease: "power3.in" }, 1.98);
+    tl.to(["#brand-copy", "#brand-ring"], { opacity: 0, duration: 0.16, ease: "power2.in" }, 2.0);
+    tl.to("#brand-bg", { opacity: 0, duration: 0.22, ease: "power2.in" }, 2.05);
+    window.__timelines["brand"] = tl;
+  </script>
+</template>

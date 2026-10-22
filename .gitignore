@@ -1,0 +1,5 @@
+media_in/
+_frames/
+_work/*.wav
+**/.hyperframes/
+node_modules/

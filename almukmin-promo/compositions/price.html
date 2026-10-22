@@ -1,0 +1,29 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    #price-card { position: absolute; left: 140px; right: 140px; top: 850px; height: 280px; border-radius: 40px;
+      background: linear-gradient(160deg, #F6DC8E 0%, #E2B84B 45%, #B8862A 100%);
+      box-shadow: 0 40px 90px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.6); text-align: center; overflow: hidden; }
+    #price-kicker { margin-top: 30px; font-family: "Montserrat", sans-serif; font-weight: 800; font-size: 34px; letter-spacing: 8px; color: #0E3B2C; }
+    #price-num { margin-top: 4px; font-family: "Archivo Black", sans-serif; font-size: 160px; line-height: 1; color: #0B2A20; letter-spacing: -4px; }
+    #price-num small { font-size: 76px; letter-spacing: 0; vertical-align: 50px; margin-right: 6px; }
+    #price-shine { position: absolute; top: -20%; left: -50%; width: 30%; height: 140%;
+      background: linear-gradient(100deg, rgba(255,255,255,0), rgba(255,255,255,.7), rgba(255,255,255,0)); }
+  </style>
+  <div id="root" data-composition-id="price" data-width="1080" data-height="1920">
+    <div id="price-card" class="clip" data-start="0" data-duration="2.15" data-track-index="0">
+      <div id="price-kicker">HARGA BERMULA</div>
+      <div id="price-num"><small>RM</small><span data-var-text="price">49</span></div>
+      <div id="price-shine"></div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#price-card", { opacity: 0, scale: 0.6, rotation: -6 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.45, ease: "back.out(1.5)" }, 0.08);
+    tl.fromTo("#price-num", { opacity: 0, scale: 2.2, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 0.93);
+    tl.fromTo("#price-card", { x: 0 }, { keyframes: [{ x: -12 }, { x: 10 }, { x: -6 }, { x: 0 }], duration: 0.24, ease: "none" }, 1.0);
+    tl.fromTo("#price-shine", { x: 0 }, { x: 1300, duration: 0.6, ease: "power2.inOut" }, 1.2);
+    tl.to("#price-card", { opacity: 0, scale: 0.9, filter: "blur(6px)", duration: 0.18, ease: "power3.in" }, 1.95);
+    window.__timelines["price"] = tl;
+  </script>
+</template>

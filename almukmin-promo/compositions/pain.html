@@ -1,0 +1,21 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    #pain-edge { position: absolute; inset: 0;
+      background: radial-gradient(75% 60% at 50% 45%, rgba(229,40,50,0) 55%, rgba(229,40,50,.55) 100%); }
+    #pain-flash { position: absolute; inset: 0; background: #FF3B3B; mix-blend-mode: screen; }
+  </style>
+  <div id="root" data-composition-id="pain" data-width="1080" data-height="1920">
+    <div id="pain-edge" class="clip" data-start="0" data-duration="1.4" data-track-index="0"></div>
+    <div id="pain-flash" class="clip" data-start="0.78" data-duration="0.3" data-track-index="1"></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // "rasa pinggang nak tercabut" — red closes in, flashes on "tercabut"
+    tl.fromTo("#pain-edge", { opacity: 0 }, { opacity: 0.6, duration: 0.5, ease: "power2.out" }, 0);
+    tl.to("#pain-edge", { opacity: 1, duration: 0.08, ease: "power2.out" }, 0.8);
+    tl.to("#pain-edge", { opacity: 0, duration: 0.45, ease: "power2.in" }, 0.92);
+    tl.fromTo("#pain-flash", { opacity: 0.35 }, { opacity: 0, duration: 0.26, ease: "power2.out" }, 0.78);
+    window.__timelines["pain"] = tl;
+  </script>
+</template>

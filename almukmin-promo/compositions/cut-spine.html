@@ -1,0 +1,42 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; pointer-events: none; }
+    #cut-spine-bg { position: absolute; inset: 0;
+      background: radial-gradient(120% 80% at 50% 40%, #16503C 0%, #0B2A20 55%, #05140F 100%); }
+    #cut-spine-card { position: absolute; left: 80px; top: 300px; width: 920px; height: 640px;
+      border-radius: 36px; overflow: hidden; border: 3px solid rgba(226,184,75,.85);
+      box-shadow: 0 40px 90px rgba(0,0,0,.55), 0 0 0 10px rgba(226,184,75,.08); }
+    #cut-spine-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+    #cut-spine-glow { position: absolute; left: 36%; top: 72%; width: 340px; height: 340px; margin: -170px 0 0 -170px;
+      border-radius: 50%; background: radial-gradient(circle, rgba(255,60,60,.75) 0%, rgba(255,60,60,0) 70%);
+      mix-blend-mode: screen; display: block; }
+    #cut-spine-chip { position: absolute; left: 0; right: 0; top: 980px; text-align: center; }
+    #cut-spine-chip span { display: inline-block; padding: 14px 34px; border-radius: 999px; background: #FF5A5F;
+      color: #0B1C15; font-family: "Montserrat", sans-serif; font-weight: 900; font-size: 40px; letter-spacing: 4px; }
+  </style>
+  <div id="root" data-composition-id="cut-spine" data-width="1080" data-height="1920">
+    <div id="cut-spine-bg" class="clip" data-start="0" data-duration="1.6" data-track-index="0"></div>
+    <div id="cut-spine-card" class="clip" data-start="0" data-duration="1.6" data-track-index="1">
+      <img id="cut-spine-img" src="assets/img/spine.jpg" alt="" />
+      <div id="cut-spine-glow"></div>
+    </div>
+    <div id="cut-spine-chip" class="clip" data-start="0" data-duration="1.6" data-track-index="2"><span id="cut-spine-label">SAKIT BELAKANG</span></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // whip in from the right, land blurred, sharpen
+    tl.fromTo("#cut-spine-bg", { opacity: 0 }, { opacity: 1, duration: 0.14, ease: "power2.out" }, 0);
+    tl.fromTo("#cut-spine-card", { x: 420, rotation: 4, filter: "blur(14px)", opacity: 0 },
+      { x: 0, rotation: 0, filter: "blur(0px)", opacity: 1, duration: 0.36, ease: "expo.out" }, 0);
+    tl.fromTo("#cut-spine-img", { scale: 1.18 }, { scale: 1.04, duration: 1.6, ease: "power1.out" }, 0);
+    tl.fromTo("#cut-spine-glow", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" }, 0.3);
+    tl.to("#cut-spine-glow", { opacity: 0.55, scale: 1.15, duration: 0.35, ease: "power2.inOut" }, 0.75);
+    tl.to("#cut-spine-glow", { opacity: 1, scale: 1, duration: 0.35, ease: "power2.inOut" }, 1.1);
+    tl.fromTo("#cut-spine-label", { opacity: 0, y: 24, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "back.out(1.6)" }, 0.18);
+    // exit: whip out to the left
+    tl.to("#cut-spine-card", { x: -380, filter: "blur(12px)", opacity: 0, duration: 0.18, ease: "power3.in" }, 1.4);
+    tl.to("#cut-spine-label", { opacity: 0, duration: 0.14, ease: "power2.in" }, 1.4);
+    tl.to("#cut-spine-bg", { opacity: 0, duration: 0.16, ease: "power2.in" }, 1.43);
+    window.__timelines["cut-spine"] = tl;
+  </script>
+</template>
