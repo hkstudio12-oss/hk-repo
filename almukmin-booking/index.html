@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!--PAGE-START-->
+<title>Al Mukmin Therapy Booking</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Figtree:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: a maroon-and-gold "treatment card" hero, then a single booking column — pick treatment, pick slot, fill details — with a sticky summary that becomes a WhatsApp message. */
+:root {
+  --bg: #F7F0E3;          /* cream card stock from the posters */
+  --surface: #FFFBF3;
+  --surface-2: #F1E6D2;
+  --ink: #3A0D12;          /* deep maroon ink */
+  --ink-soft: #6E4A48;
+  --line: #E2D2B6;
+  --maroon: #5E1018;
+  --maroon-2: #7C1A24;
+  --gold: #B8872E;
+  --gold-hi: #E2B84B;
+  --on-maroon: #FBEFD6;
+  --strike: #B3261E;
+  --ok: #1E6B45;
+  --focus: #C08A1E;
+  --display: "Marcellus", "Cormorant Garamond", Georgia, serif;
+  --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --r: 14px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1A0709; --surface: #260C10; --surface-2: #331318; --ink: #F6E7CC; --ink-soft: #CDB59A;
+    --line: #4A2026; --maroon: #3F0A10; --maroon-2: #5E1018; --gold: #E2B84B; --gold-hi: #F3D27C;
+    --on-maroon: #FBEFD6; --strike: #FF8A80; --ok: #6FD3A0; --focus: #F3D27C; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1A0709; --surface: #260C10; --surface-2: #331318; --ink: #F6E7CC; --ink-soft: #CDB59A;
+  --line: #4A2026; --maroon: #3F0A10; --maroon-2: #5E1018; --gold: #E2B84B; --gold-hi: #F3D27C;
+  --on-maroon: #FBEFD6; --strike: #FF8A80; --ok: #6FD3A0; --focus: #F3D27C; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; text-wrap: balance; margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+/* Hero */
+.hero { background: radial-gradient(120% 140% at 15% 0%, var(--maroon-2), var(--maroon) 55%, #2A0509); color: var(--on-maroon); border-bottom: 3px solid var(--gold-hi); }
+.hero .wrap { padding-block: 28px 30px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+.logo { width: 76px; height: 76px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-hi); background: #fff; flex: none; }
+.hero-txt { flex: 1 1 320px; min-width: 0; }
+.eyebrow { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold-hi); font-weight: 700; }
+.hero h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.1; margin-top: 4px; color: #F6DC8E; }
+.hero p { margin: 8px 0 0; max-width: 60ch; color: var(--on-maroon); opacity: .9; }
+.steps { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; padding: 0; list-style: none; }
+.steps li { font-size: 13px; padding: 5px 12px; border-radius: 999px; border: 1px solid rgba(226,184,75,.5); color: var(--on-maroon); }
+.steps b { color: var(--gold-hi); margin-right: 4px; }
+
+/* Main grid */
+main.wrap { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; padding-block: 28px 64px; align-items: start; }
+@media (max-width: 880px) { main.wrap { grid-template-columns: minmax(0, 1fr); } }
+section.block { display: grid; gap: 14px; }
+section.block + section.block { margin-top: 30px; }
+.sec-head { display: flex; align-items: baseline; gap: 10px; }
+.sec-num { font-family: var(--display); font-size: 15px; color: var(--on-maroon); background: var(--maroon); border: 1px solid var(--gold); width: 30px; height: 30px; display: inline-grid; place-items: center; border-radius: 50%; flex: none; }
+.sec-head h2 { font-size: 24px; }
+
+/* Category tabs */
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.tab { flex: none; border: 1px solid var(--line); background: var(--surface); padding: 8px 14px; border-radius: 999px; cursor: pointer; font-weight: 600; font-size: 14px; color: var(--ink-soft); }
+.tab[aria-selected="true"] { background: var(--maroon); color: var(--on-maroon); border-color: var(--gold); }
+.cat-note { font-size: 14px; color: var(--ink-soft); margin: 0; }
+
+/* Treatment options */
+.opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.opt { position: relative; text-align: left; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 14px 16px; cursor: pointer; display: grid; gap: 6px; align-content: start; transition: border-color .15s, transform .15s; }
+.opt:hover { border-color: var(--gold); }
+.opt[aria-checked="true"] { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold) inset; background: var(--surface-2); }
+.opt-name { font-weight: 700; font-size: 15px; line-height: 1.3; padding-right: 64px; }
+.opt-meta { font-size: 13px; color: var(--ink-soft); }
+.opt-price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.rm { font-family: var(--display); font-size: 24px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.rm small { font-family: var(--body); font-size: 12px; color: var(--ink-soft); margin-left: 2px; }
+.was { font-size: 13px; color: var(--ink-soft); }
+.was s { text-decoration: line-through; text-decoration-color: var(--strike); text-decoration-thickness: 2px; }
+.ribbon { position: absolute; top: 10px; right: 10px; font-size: 11px; font-weight: 800; letter-spacing: .04em; background: linear-gradient(180deg, var(--gold-hi), var(--gold)); color: #2A0509; padding: 3px 8px; border-radius: 6px; }
+.opt ul { margin: 2px 0 0; padding-left: 18px; font-size: 13px; color: var(--ink-soft); }
+
+/* Sub choices */
+.sub { border: 1px dashed var(--gold); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 10px; background: var(--surface); }
+.sub-label { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--gold); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 7px 14px; cursor: pointer; font-weight: 600; font-size: 14px; }
+.chip[aria-checked="true"] { background: var(--maroon); color: var(--on-maroon); border-color: var(--gold); }
+.chip:disabled { opacity: .4; cursor: not-allowed; text-decoration: line-through; }
+.toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 600; }
+.toggle input { width: 20px; height: 20px; accent-color: var(--maroon-2); }
+
+/* Dates */
+.dates { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+.date { flex: none; width: 66px; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 8px 4px; cursor: pointer; display: grid; justify-items: center; gap: 0; }
+.date .dw { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); font-weight: 700; }
+.date .dd { font-family: var(--display); font-size: 24px; line-height: 1.2; }
+.date .dm { font-size: 11px; color: var(--ink-soft); }
+.date[aria-checked="true"] { background: var(--maroon); border-color: var(--gold); }
+.date[aria-checked="true"] .dw, .date[aria-checked="true"] .dd, .date[aria-checked="true"] .dm { color: var(--on-maroon); }
+.times { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; }
+.time { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 9px 4px; cursor: pointer; font-weight: 600; font-variant-numeric: tabular-nums; }
+.time[aria-checked="true"] { background: var(--maroon); color: var(--on-maroon); border-color: var(--gold); }
+.time:disabled { opacity: .35; cursor: not-allowed; }
+
+/* Form */
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form .full { grid-column: 1 / -1; }
+@media (max-width: 560px) { .form { grid-template-columns: 1fr; } }
+.field { display: grid; gap: 5px; min-width: 0; }
+.field label { font-size: 13px; font-weight: 700; }
+.field input, .field textarea, .field select { width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 10px 12px; }
+.field textarea { min-height: 80px; resize: vertical; }
+.err { color: var(--strike); font-size: 13px; min-height: 0; }
+
+/* Summary */
+aside.summary { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); background: var(--maroon); color: var(--on-maroon); border: 1px solid var(--gold); border-radius: 18px; padding: 20px; display: grid; gap: 14px; }
+@media (max-width: 880px) { aside.summary { position: static; } }
+aside h2 { font-size: 22px; color: #F6DC8E; }
+.sum-rows { display: grid; gap: 8px; margin: 0; }
+.sum-rows div { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 8px; font-size: 14px; }
+.sum-rows dt { color: var(--gold-hi); font-weight: 600; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding-top: 2px; }
+.sum-rows dd { margin: 0; overflow-wrap: anywhere; }
+.sum-empty { opacity: .65; font-style: italic; }
+.total { border-top: 1px solid rgba(226,184,75,.45); padding-top: 12px; display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.total span:first-child { font-size: 13px; text-transform: uppercase; letter-spacing: .1em; color: var(--gold-hi); font-weight: 700; }
+.total .big { font-family: var(--display); font-size: 34px; color: #F6DC8E; font-variant-numeric: tabular-nums; }
+.save { font-size: 13px; color: var(--gold-hi); text-align: right; margin-top: -10px; }
+.btn { display: inline-flex; justify-content: center; align-items: center; gap: 8px; border: 0; border-radius: 12px; padding: 13px 16px; font-weight: 800; cursor: pointer; text-decoration: none; font-size: 15px; }
+.btn-gold { background: linear-gradient(180deg, #F6DC8E, #E2B84B 60%, #C9972F); color: #2A0509; }
+.btn-ghost { background: transparent; color: var(--on-maroon); border: 1px solid rgba(226,184,75,.6); }
+.btn[aria-disabled="true"] { opacity: .5; pointer-events: none; }
+.hint { font-size: 12.5px; opacity: .85; margin: 0; }
+.wa-num { font-variant-numeric: tabular-nums; user-select: all; color: #F6DC8E; font-weight: 700; }
+.done { background: var(--surface-2); color: var(--ink); border-radius: 12px; padding: 12px; font-size: 13.5px; }
+.done pre { white-space: pre-wrap; font: 12.5px/1.5 var(--body); margin: 6px 0 0; max-height: 220px; overflow: auto; }
+
+footer { border-top: 1px solid var(--line); }
+footer .wrap { padding-block: 22px; font-size: 13px; color: var(--ink-soft); display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-between; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <img class="logo" src="logo.jpg" alt="Logo Al Mukmin Therapy" width="76" height="76">
+    <div class="hero-txt">
+      <div class="eyebrow">Pusat Terapi &amp; Urutan</div>
+      <h1>Tempah Rawatan Al Mukmin Therapy</h1>
+      <p>Pilih rawatan atau pakej, tetapkan tarikh dan masa, kemudian hantar tempahan terus ke WhatsApp kami untuk pengesahan.</p>
+      <ol class="steps">
+        <li><b>1</b>Pilih rawatan</li>
+        <li><b>2</b>Tarikh &amp; masa</li>
+        <li><b>3</b>Maklumat anda</li>
+        <li><b>4</b>Hantar ke WhatsApp</li>
+      </ol>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div>
+    <section class="block" aria-labelledby="s1">
+      <div class="sec-head"><span class="sec-num">1</span><h2 id="s1">Pilih rawatan</h2></div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <p class="cat-note" id="catNote"></p>
+      <div class="opts" role="radiogroup" aria-label="Senarai rawatan" id="opts"></div>
+      <div class="sub" id="sub" hidden></div>
+    </section>
+
+    <section class="block" aria-labelledby="s2">
+      <div class="sec-head"><span class="sec-num">2</span><h2 id="s2">Tarikh &amp; masa</h2></div>
+      <div class="dates" role="radiogroup" aria-label="Tarikh" id="dates"></div>
+      <div class="times" role="radiogroup" aria-label="Masa" id="times"></div>
+      <p class="cat-note">Setiap sesi lebih kurang 1 jam. Masa akhir disahkan oleh admin melalui WhatsApp.</p>
+    </section>
+
+    <section class="block" aria-labelledby="s3">
+      <div class="sec-head"><span class="sec-num">3</span><h2 id="s3">Maklumat anda</h2></div>
+      <form class="form" id="form" novalidate>
+        <div class="field"><label for="fName">Nama penuh</label><input id="fName" autocomplete="name" placeholder="cth. Ahmad bin Ali"></div>
+        <div class="field"><label for="fPhone">No. telefon</label><input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="cth. 012-345 6789"></div>
+        <div class="field"><label for="fGender">Jantina</label>
+          <select id="fGender"><option value="">Pilih</option><option>Lelaki</option><option>Perempuan</option></select></div>
+        <div class="field"><label for="fTherapist">Pilihan terapis</label>
+          <select id="fTherapist"><option>Tiada pilihan</option><option>Terapis lelaki</option><option>Terapis perempuan</option></select></div>
+        <div class="field full"><label for="fNote">Masalah / catatan (pilihan)</label><textarea id="fNote" placeholder="cth. sakit pinggang sejak 2 minggu, ada darah tinggi"></textarea></div>
+        <div class="err full" id="err" role="alert"></div>
+      </form>
+    </section>
+  </div>
+
+  <aside class="summary" aria-labelledby="sumTitle">
+    <h2 id="sumTitle">Ringkasan tempahan</h2>
+    <dl class="sum-rows" id="sumRows"></dl>
+    <div class="total"><span>Jumlah</span><span class="big" id="sumTotal">RM0</span></div>
+    <div class="save" id="sumSave"></div>
+    <a class="btn btn-gold" id="waBtn" href="#" target="_blank" rel="noopener" aria-disabled="true">Hantar tempahan ke WhatsApp</a>
+    <button class="btn btn-ghost" id="copyBtn" type="button">Salin mesej tempahan</button>
+    <p class="hint">WhatsApp admin: <span class="wa-num" id="waNum"></span>. Tempahan hanya sah selepas admin membalas dan mengesahkan slot.</p>
+    <div class="done" id="done" hidden></div>
+  </aside>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Al Mukmin Therapy · Urutan · Bekam · Shockwave · Gasgas</span>
+    <span>Harga dalam Ringgit Malaysia (RM)</span>
+  </div>
+</footer>
+
+<script>
+/* ===== Tetapan kedai: tukar di sini ===== */
+const CONFIG = {
+  whatsapp: "60123456789",        // nombor WhatsApp admin (format antarabangsa, tanpa + atau -)
+  openHour: 10, closeHour: 21,     // slot pertama 10:00, slot terakhir 20:00
+  closedDays: [],                  // 0=Ahad … 6=Sabtu, cth. [5] untuk tutup hari Jumaat
+  daysAhead: 21
+};
+
+/* ===== Data rawatan (dari poster) ===== */
+const MAIN3 = ["Terapi Urut Pasak", "Sport Massage", "Bekam Full Body"];
+const CATS = [
+  { id: "urut", name: "Urutan / Massage", note: "Urutan tradisional dan sukan oleh terapis terlatih.", items: [
+    { id: "u1", name: "Terapi Urut Pasak", price: 127 },
+    { id: "u2", name: "Sport Massage / Urutan Minyak", meta: "Full body", price: 127 },
+    { id: "u3", name: "Urutan Peranakan", meta: "Full body", price: 127, women: true },
+    { id: "u4", name: "Urutan Separuh Badan", meta: "Half body massage", price: 97 },
+    { id: "u5", name: "Urutan Kaki", meta: "Reflexology", price: 49 },
+    { id: "u6", name: "Urutan Bahu dan Kepala", price: 49 }
+  ]},
+  { id: "bekam", name: "Terapi Bekam", note: "Bekam angin, bekam ais, bekam basah dan ruqyah.", items: [
+    { id: "b1", name: "Bekam Angin", meta: "21 cup", price: 97 },
+    { id: "b2", name: "Bekam Angin + Bekam Ais", meta: "21 cup", price: 130 },
+    { id: "b3", name: "Bekam Basah", meta: "15 cup", price: 97 },
+    { id: "b4", name: "Bekam Basah", meta: "21 cup", price: 130 },
+    { id: "b5", name: "Bekam Basah + Ruqyah", meta: "21 cup", price: 130 },
+    { id: "b6", name: "Bekam Kepala", meta: "4 cup", price: 50 }
+  ]},
+  { id: "gasgas", name: "Rawatan Gasgas", note: "Untuk gastrik, angin, sembelit, GERD dan stress. Setiap sesi 1 jam.", items: [
+    { id: "g1", name: "Gasgas Tahap 1", meta: "Acupressure 148 point · 1 jam", price: 127 },
+    { id: "g2", name: "Gasgas Tahap 2", meta: "Acupressure 148 point + urutan minyak · 1 jam", price: 127 },
+    { id: "g3", name: "Gasgas Tahap 3", meta: "Acupressure 148 point + bekam ais · 1 jam", price: 127 },
+    { id: "g4", name: "Pakej Gasgas 3 Sesi", meta: "Tahap 1 › Tahap 2 › Tahap 3", price: 300, sessions: 3,
+      list: ["3 sesi rawatan", "Tempoh setiap sesi 1 jam"] }
+  ]},
+  { id: "shock", name: "Shockwave", note: "Rawatan shockwave untuk sakit otot, sendi dan saraf.", items: [
+    { id: "s1", name: "Shockwave · Basic", meta: "1x sesi", price: 127, unit: "sesi" },
+    { id: "s2", name: "Shockwave · Wellness", price: 300, was: 381, sessions: 3, list: ["3x sesi rawatan Shockwave", "Untuk tempoh 3 bulan"] },
+    { id: "s3", name: "Shockwave · Intensive", price: 500, was: 635, sessions: 5, list: ["5x sesi rawatan Shockwave", "Untuk tempoh 6 bulan"] }
+  ]},
+  { id: "pakej", name: "Pakej Rawatan", note: "Pilih Urut Pasak, Sport Massage atau Bekam Full Body untuk setiap sesi. Add-on Shockwave RM40/sesi.", items: [
+    { id: "p1", name: "Pakej Rawatan · Basic", price: 127, unit: "sesi", choose: true, addon: true, list: ["1x sesi rawatan"] },
+    { id: "p2", name: "Pakej Rawatan · Wellness", price: 300, was: 381, sessions: 3, choose: true, addon: true,
+      list: ["3x sesi rawatan", "Sah untuk tempoh 3 bulan", "1x bayaran"] },
+    { id: "p3", name: "Pakej Rawatan · Intensive", price: 500, was: 762, sessions: 6, choose: true, addon: true,
+      list: ["5x sesi rawatan + FREE 1x sesi", "Sah untuk tempoh 6 bulan", "Family Package", "2x bayaran"] }
+  ]},
+  { id: "batin", name: "Rawatan Batin Lelaki", note: "Untuk lelaki sahaja. Urut Pasak / Sport Massage / Bekam Full Body + Shockwave Batin.", men: true, items: [
+    { id: "t1", name: "Pakej Batin · Basic", price: 167, was: 254, unit: "sesi", choose: true,
+      list: ["1x sesi rawatan", "+ Shockwave Batin (RM40, harga asal RM127)"] },
+    { id: "t2", name: "Pakej Batin · Wellness", price: 400, was: 501, sessions: 3, choose: true,
+      list: ["3x sesi rawatan + Shockwave Batin", "Untuk tempoh 3 bulan"] },
+    { id: "t3", name: "Pakej Batin · Intensive", price: 600, was: 835, sessions: 5, choose: true,
+      list: ["5x sesi rawatan + Shockwave Batin", "Untuk tempoh 6 bulan"] }
+  ]}
+];
+
+/* ===== State ===== */
+const S = { cat: "urut", item: null, main: null, addon: false, date: null, time: null };
+const $ = (id) => document.getElementById(id);
+const rm = (n) => "RM" + n.toLocaleString("en-MY");
+const DAYS = ["Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu"];
+const MONTHS = ["Jan", "Feb", "Mac", "Apr", "Mei", "Jun", "Jul", "Ogo", "Sep", "Okt", "Nov", "Dis"];
+const findItem = (id) => { for (const c of CATS) for (const i of c.items) if (i.id === id) return { cat: c, item: i }; return null; };
+
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") e.className = v; else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v === true ? "" : v);
+  }
+  for (const k of kids.flat()) if (k != null) e.append(k.nodeType ? k : document.createTextNode(k));
+  return e;
+}
+
+function renderTabs() {
+  $("tabs").replaceChildren(...CATS.map(c => el("button", {
+    class: "tab", role: "tab", type: "button", "aria-selected": String(S.cat === c.id),
+    onclick: () => { S.cat = c.id; renderTabs(); renderOpts(); }
+  }, c.name)));
+  const c = CATS.find(c => c.id === S.cat);
+  $("catNote").textContent = c.note;
+}
+
+function renderOpts() {
+  const c = CATS.find(c => c.id === S.cat);
+  $("opts").replaceChildren(...c.items.map(i => {
+    const save = i.was ? i.was - i.price : 0;
+    return el("button", {
+      class: "opt", type: "button", role: "radio", "aria-checked": String(S.item === i.id),
+      onclick: () => { S.item = i.id; if (!i.choose) S.main = null; else if (!S.main) S.main = MAIN3[0]; if (!i.addon) S.addon = false; renderOpts(); update(); }
+    },
+      save ? el("span", { class: "ribbon" }, "JIMAT " + rm(save)) : null,
+      el("span", { class: "opt-name" }, i.name),
+      i.meta ? el("span", { class: "opt-meta" }, i.meta) : null,
+      el("span", { class: "opt-price" },
+        el("span", { class: "rm" }, rm(i.price), i.unit ? el("small", {}, "/ " + i.unit) : null),
+        i.was ? el("span", { class: "was" }, "Harga asal ", el("s", {}, rm(i.was))) : null),
+      i.list ? el("ul", {}, i.list.map(t => el("li", {}, t))) : null,
+      i.women ? el("span", { class: "opt-meta" }, "Untuk wanita") : null
+    );
+  }));
+  renderSub();
+}
+
+function renderSub() {
+  const f = S.item && findItem(S.item);
+  const sub = $("sub");
+  if (!f || (!f.item.choose && !f.item.addon)) { sub.hidden = true; sub.replaceChildren(); return; }
+  sub.hidden = false;
+  const kids = [];
+  if (f.item.choose) {
+    kids.push(el("div", { class: "sub-label" }, "Rawatan utama untuk sesi pertama"));
+    kids.push(el("div", { class: "chips", role: "radiogroup", "aria-label": "Rawatan utama" }, MAIN3.map(m =>
+      el("button", { class: "chip", type: "button", role: "radio", "aria-checked": String(S.main === m),
+        onclick: () => { S.main = m; renderSub(); update(); } }, m))));
+  }
+  if (f.item.addon) {
+    const cb = el("input", { type: "checkbox", id: "fAddon", onchange: (e) => { S.addon = e.target.checked; update(); } });
+    cb.checked = S.addon;
+    kids.push(el("label", { class: "toggle", for: "fAddon" }, cb, "Tambah Shockwave (RM40 / sesi)"));
+  }
+  sub.replaceChildren(...kids);
+}
+
+function dateKey(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+
+function renderDates() {
+  const out = [];
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  for (let n = 0; n < CONFIG.daysAhead; n++) {
+    const d = new Date(today); d.setDate(today.getDate() + n);
+    if (CONFIG.closedDays.includes(d.getDay())) continue;
+    const k = dateKey(d);
+    if (!S.date) S.date = k;
+    out.push(el("button", { class: "date", type: "button", role: "radio", "aria-checked": String(S.date === k),
+      "aria-label": DAYS[d.getDay()] + " " + d.getDate() + " " + MONTHS[d.getMonth()],
+      onclick: () => { S.date = k; S.time = null; renderDates(); renderTimes(); update(); } },
+      el("span", { class: "dw" }, n === 0 ? "Hari ini" : DAYS[d.getDay()].slice(0, 3)),
+      el("span", { class: "dd" }, String(d.getDate())),
+      el("span", { class: "dm" }, MONTHS[d.getMonth()])));
+  }
+  $("dates").replaceChildren(...out);
+}
+
+function renderTimes() {
+  const now = new Date();
+  const isToday = S.date === dateKey(now);
+  const out = [];
+  for (let h = CONFIG.openHour; h < CONFIG.closeHour; h++) {
+    const label = String(h).padStart(2, "0") + ":00";
+    const past = isToday && h <= now.getHours();
+    out.push(el("button", { class: "time", type: "button", role: "radio", disabled: past,
+      "aria-checked": String(S.time === label),
+      onclick: () => { S.time = label; renderTimes(); update(); } }, fmt12(h)));
+  }
+  $("times").replaceChildren(...out);
+}
+function fmt12(h) { const ap = h < 12 ? "pg" : "ptg"; const hh = h % 12 || 12; return hh + ":00 " + ap; }
+
+function prettyDate(k) {
+  if (!k) return null;
+  const [y, m, d] = k.split("-").map(Number); const dt = new Date(y, m - 1, d);
+  return DAYS[dt.getDay()] + ", " + d + " " + MONTHS[m - 1] + " " + y;
+}
+
+function calc() {
+  const f = S.item && findItem(S.item);
+  if (!f) return null;
+  const sessions = f.item.sessions || 1;
+  const addon = S.addon ? 40 * sessions : 0;
+  return { f, sessions, addon, total: f.item.price + addon, save: f.item.was ? f.item.was - f.item.price : 0 };
+}
+
+function message() {
+  const c = calc(); if (!c) return "";
+  const lines = [
+    "Assalamualaikum Al Mukmin Therapy, saya ingin membuat tempahan:",
+    "",
+    "Rawatan: " + c.f.item.name + (c.f.item.meta ? " (" + c.f.item.meta + ")" : ""),
+  ];
+  if (S.main) lines.push("Rawatan utama: " + S.main);
+  if (S.addon) lines.push("Add-on: Shockwave RM40 x " + c.sessions + " sesi");
+  lines.push("Tarikh: " + (prettyDate(S.date) || "-"));
+  lines.push("Masa: " + (S.time ? fmt12(+S.time.slice(0, 2)) : "-"));
+  lines.push("Jumlah: " + rm(c.total));
+  lines.push("");
+  lines.push("Nama: " + $("fName").value.trim());
+  lines.push("Telefon: " + $("fPhone").value.trim());
+  if ($("fGender").value) lines.push("Jantina: " + $("fGender").value);
+  lines.push("Terapis: " + $("fTherapist").value);
+  if ($("fNote").value.trim()) lines.push("Catatan: " + $("fNote").value.trim());
+  return lines.join("\n");
+}
+
+function problems() {
+  const p = [];
+  const c = calc();
+  if (!c) p.push("pilih rawatan");
+  if (!S.time) p.push("pilih masa");
+  if (!$("fName").value.trim()) p.push("isi nama");
+  if ($("fPhone").value.replace(/\D/g, "").length < 9) p.push("isi no. telefon yang sah");
+  if (c && c.f.cat.men && $("fGender").value === "Perempuan") p.push("Rawatan Batin untuk lelaki sahaja");
+  if (c && c.f.item.women && $("fGender").value === "Lelaki") p.push("Urutan Peranakan untuk wanita sahaja");
+  return p;
+}
+
+function update() {
+  const c = calc();
+  const rows = [
+    ["Rawatan", c ? c.f.item.name : null],
+    ["Utama", S.main && c && c.f.item.choose ? S.main : undefined],
+    ["Add-on", S.addon && c ? "Shockwave " + rm(c.addon) : undefined],
+    ["Tarikh", prettyDate(S.date)],
+    ["Masa", S.time ? fmt12(+S.time.slice(0, 2)) : null],
+    ["Nama", $("fName").value.trim() || null]
+  ].filter(r => r[1] !== undefined);
+  $("sumRows").replaceChildren(...rows.map(([k, v]) => el("div", {}, el("dt", {}, k),
+    el("dd", { class: v ? "" : "sum-empty" }, v || "Belum dipilih"))));
+  $("sumTotal").textContent = rm(c ? c.total : 0);
+  $("sumSave").textContent = c && c.save ? "Anda jimat " + rm(c.save) : "";
+  const p = problems();
+  const btn = $("waBtn");
+  if (p.length) { btn.setAttribute("aria-disabled", "true"); btn.href = "#"; }
+  else { btn.removeAttribute("aria-disabled"); btn.href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(message()); }
+  $("err").textContent = "";
+}
+
+function showDone(text, title) {
+  const d = $("done"); d.hidden = false;
+  d.replaceChildren(el("strong", {}, title), el("pre", {}, text));
+}
+
+$("waBtn").addEventListener("click", (e) => {
+  const p = problems();
+  if (p.length) { e.preventDefault(); $("err").textContent = "Sila " + p.join(", ") + "."; return; }
+  showDone(message(), "WhatsApp dibuka dengan mesej di bawah. Tekan Hantar dalam WhatsApp untuk menghantar tempahan.");
+});
+$("copyBtn").addEventListener("click", async () => {
+  const p = problems();
+  if (p.length) { $("err").textContent = "Sila " + p.join(", ") + "."; return; }
+  const text = message();
+  try { await navigator.clipboard.writeText(text); showDone(text, "Mesej disalin. Tampal dan hantar ke WhatsApp " + prettyNum() + "."); }
+  catch { showDone(text, "Salin mesej di bawah dan hantar ke WhatsApp " + prettyNum() + "."); }
+});
+function prettyNum() { const n = CONFIG.whatsapp.replace(/^60/, "0"); return n.replace(/^(\d{3})(\d{3,4})(\d{4})$/, "$1-$2 $3"); }
+
+["fName", "fPhone", "fGender", "fTherapist", "fNote"].forEach(id => $(id).addEventListener("input", update));
+$("form").addEventListener("submit", (e) => e.preventDefault());
+
+$("waNum").textContent = prettyNum();
+renderTabs(); renderOpts(); renderDates(); renderTimes(); update();
+</script>
+<!--PAGE-END-->
+</body>
+</html>
