@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: forest-green crest header, then two columns — three numbered step panels on the left, a sticky receipt-style summary on the right. Mobile: one column plus a bottom total bar. */
+/* Single light theme by choice (white + brand green/gold). Layout: forest-green crest header, then two columns — three numbered step panels on the left, a sticky receipt-style summary on the right. Mobile: one column plus a bottom total bar. */
 :root {
   --bg: #F3F1EA;
   --surface: #FFFFFF;
@@ -33,22 +33,6 @@
   --body: "Manrope", "Segoe UI", system-ui, sans-serif;
   --shadow: 0 1px 2px rgba(15,42,31,.04), 0 8px 24px rgba(15,42,31,.06);
   color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0A1611; --surface: #11221A; --surface-2: #0D1C15; --ink: #ECE7D8; --muted: #A2AEA6;
-    --line: #213A2E; --line-strong: #2E4C3D; --green: #1F5039; --green-deep: #0C2018; --green-tint: #173327;
-    --gold: #D9B865; --gold-hi: #E8CD86; --gold-tint: #2A2614; --on-green: #F4EEDC; --danger: #F08A76;
-    --accent-num: #E8CD86; --radio: #E8CD86;
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0A1611; --surface: #11221A; --surface-2: #0D1C15; --ink: #ECE7D8; --muted: #A2AEA6;
-  --line: #213A2E; --line-strong: #2E4C3D; --green: #1F5039; --green-deep: #0C2018; --green-tint: #173327;
-  --gold: #D9B865; --gold-hi: #E8CD86; --gold-tint: #2A2614; --on-green: #F4EEDC; --danger: #F08A76;
-  --accent-num: #E8CD86; --radio: #E8CD86;
-  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); color-scheme: dark;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
