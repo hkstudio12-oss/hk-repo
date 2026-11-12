@@ -20,7 +20,9 @@ Built so you can move **off the old developer entirely**:
 | Sign in | `pages/login/login.vue` | email/password + Google/Apple hooks |
 | Devices (home) | `pages/home/home.vue` | device list, battery/temp at a glance |
 | Connect | `pages/connect/connect.vue` | BLE scan + connect |
-| Control | `pages/control/control.vue` | the core — dial, set temp, modes, power, °C/°F |
+| Control | `pages/control/control.vue` | the core — **draggable** temperature dial, set temp, modes, power, °C/°F |
+| Register | `pages/register/register.vue` | create account, then warranty popup |
+| Warranty | `pages/warranty/warranty.vue` | scan/enter serial to register warranty |
 | Device settings | `pages/settings/settings.vue` | name, battery protection, schedule, light/fan |
 | Alerts | `pages/alerts/alerts.vue` | fault + status notifications |
 | Shop | `pages/shop/shop.vue` | product grid |
@@ -92,8 +94,19 @@ Auth is a bearer token returned by `/auth/login` as `data.token`.
 | GET | `/device-alarm/list` | — | `[{ title, message, time, severity }]` |
 | POST | `/device-alarm/create` | `{ deviceId, code }` | ok |
 | GET | `/product/list` | — | `[{ id, name, price, image }]` |
+| GET | `/warranty/list` | — | `[{ serial, model, until, expired }]` |
+| POST | `/warranty/register` | `{ serial, purchaseDate, seller }` | ok |
 
 `severity` is one of `info` \| `danger` \| `good` (controls the alert icon/colour).
+
+### Warranty
+
+Warranty registration runs through `pages/warranty/warranty.vue`:
+- reachable from the **login screen** ("Scan your warranty"), the **account**
+  screen ("Warranty" section), and as a **popup right after registration**.
+- scans the unit's QR/barcode via `uni.scanCode`, or accepts a typed serial,
+  plus purchase date and seller, then calls `POST /warranty/register`.
+- a guest who scans before signing in keeps the serial and is prompted to sign in.
 
 ## BLE protocol
 

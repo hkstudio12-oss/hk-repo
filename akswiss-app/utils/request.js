@@ -78,5 +78,8 @@ export const api = {
   alarms: () => request('/device-alarm/list'),
   createAlarm: (data) => request('/device-alarm/create', { method: 'POST', data }),
 
+  warrantyList: () => request('/warranty/list'),
+  registerWarranty: (data) => request('/warranty/register', { method: 'POST', data }),
+
   products: () => request('/product/list', { auth: false }),
 }

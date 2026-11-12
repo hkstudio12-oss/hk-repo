@@ -14,6 +14,21 @@
           <text class="edit">Edit ›</text>
         </view>
 
+        <text class="section">Warranty</text>
+        <view class="group">
+          <view class="line" @tap="goWarranty">
+            <text class="line-label">My warranties</text>
+            <view class="right">
+              <text class="count">{{ warrantyCount }}</text>
+              <text class="chev">›</text>
+            </view>
+          </view>
+          <view class="line no-border" @tap="goWarranty">
+            <text class="line-label">Register a warranty</text>
+            <text class="chev">›</text>
+          </view>
+        </view>
+
         <text class="section">Help</text>
         <view class="group">
           <view class="line" @tap="soon">
@@ -59,7 +74,7 @@ import { api, clearToken } from '@/utils/request.js'
 
 export default {
   data() {
-    return { statusBar: 20, profile: {} }
+    return { statusBar: 20, profile: {}, warrantyCount: 0 }
   },
   computed: {
     initial() {
@@ -82,6 +97,16 @@ export default {
       } catch (e) {
         this.profile = {}
       }
+      try {
+        const list = await api.warrantyList()
+        const rows = Array.isArray(list) ? list : (list && list.list) || []
+        this.warrantyCount = rows.length
+      } catch (e) {
+        this.warrantyCount = 0
+      }
+    },
+    goWarranty() {
+      uni.navigateTo({ url: '/pages/warranty/warranty' })
     },
     soon() {
       uni.showToast({ title: 'Coming soon', icon: 'none' })
@@ -203,6 +228,19 @@ export default {
 .chev {
   font-size: 34rpx;
   color: #8b8f96;
+}
+.right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.count {
+  font-size: 26rpx;
+  color: #8acbff;
+  font-weight: 600;
+  margin-right: 12rpx;
+  min-width: 28rpx;
+  text-align: right;
 }
 .signout {
   height: 104rpx;

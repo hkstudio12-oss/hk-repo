@@ -1,6 +1,8 @@
 {
   "pages": [
     { "path": "pages/login/login", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
+    { "path": "pages/register/register", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
+    { "path": "pages/warranty/warranty", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
     { "path": "pages/home/home", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
     { "path": "pages/shop/shop", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
     { "path": "pages/alerts/alerts", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },

@@ -47,6 +47,11 @@
 
         <button class="primary" :loading="loading" @tap="onLogin">Sign in</button>
 
+        <button class="warranty" @tap="scanWarranty">
+          <text class="warranty-glyph">⛶</text>
+          <text class="warranty-text">Scan your warranty</text>
+        </button>
+
         <view class="or">
           <view class="rule"></view>
           <text class="or-text">or continue with</text>
@@ -113,7 +118,10 @@ export default {
       this.toast('Password reset coming soon')
     },
     register() {
-      this.toast('Registration coming soon')
+      uni.navigateTo({ url: '/pages/register/register' })
+    },
+    scanWarranty() {
+      uni.navigateTo({ url: '/pages/warranty/warranty' })
     },
   },
 }
@@ -248,6 +256,27 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.warranty {
+  height: 104rpx;
+  margin-top: 20rpx;
+  border-radius: 52rpx;
+  border: 1px solid rgba(138, 203, 255, 0.35);
+  background-color: #15171a;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.warranty-glyph {
+  font-size: 34rpx;
+  color: #8acbff;
+  margin-right: 14rpx;
+}
+.warranty-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #f4f1ea;
 }
 .or {
   display: flex;

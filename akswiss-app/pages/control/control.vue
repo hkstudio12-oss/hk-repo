@@ -43,6 +43,11 @@
             </view>
             <text class="dial-stat" :style="{ color: statusColor }">{{ statusLabel }}</text>
           </view>
+          <view
+            class="dial-touch"
+            @touchstart.stop.prevent="startDial"
+            @touchmove.stop.prevent="onDialTouch"
+          ></view>
         </view>
 
         <!-- Stepper -->
@@ -123,6 +128,7 @@ export default {
       stopListen: null,
       poll: null,
       sendTimer: null,
+      dialRect: null,
     }
   },
   computed: {
@@ -177,7 +183,10 @@ export default {
     this.poll = setInterval(() => this.refresh(), 3000)
   },
   onReady() {
-    this.$nextTick(() => this.drawDial())
+    this.$nextTick(() => {
+      this.drawDial()
+      this.measureDial()
+    })
   },
   onUnload() {
     if (this.poll) clearInterval(this.poll)
@@ -233,6 +242,47 @@ export default {
       this.setC = Math.min(30, this.setC + 1)
       this.drawDial()
       this.queueSend()
+    },
+    // --- Draggable dial ---
+    measureDial() {
+      uni
+        .createSelectorQuery()
+        .in(this)
+        .select('.dial')
+        .boundingClientRect((r) => {
+          if (r) this.dialRect = r
+        })
+        .exec()
+    },
+    applyDialTouch(t) {
+      if (!this.on || !t || !this.dialRect) return
+      const cx = this.dialRect.left + this.dialRect.width / 2
+      const cy = this.dialRect.top + this.dialRect.height / 2
+      const x = t.clientX != null ? t.clientX : t.pageX
+      const y = t.clientY != null ? t.clientY : t.pageY
+      let deg = (Math.atan2(y - cy, x - cx) * 180) / Math.PI
+      deg = (deg + 360) % 360
+      // Arc runs from 135° clockwise through 270°; bottom gap is ignored.
+      const delta = (deg - 135 + 360) % 360
+      if (delta > 270) return
+      const min = -20
+      const max = 30
+      const temp = Math.round(min + (delta / 270) * (max - min))
+      const clamped = Math.max(min, Math.min(max, temp))
+      if (clamped !== this.setC) {
+        this.setC = clamped
+        this.drawDial()
+        this.queueSend()
+      }
+    },
+    startDial(e) {
+      this.measureDial()
+      const t = e.touches && e.touches[0]
+      if (t) this.applyDialTouch(t)
+    },
+    onDialTouch(e) {
+      const t = e.touches && e.touches[0]
+      if (t) this.applyDialTouch(t)
     },
     pickMode(i) {
       this.mode = i
@@ -397,6 +447,13 @@ export default {
   position: relative;
 }
 .dial-canvas {
+  width: 600rpx;
+  height: 600rpx;
+}
+.dial-touch {
+  position: absolute;
+  left: 0;
+  top: 0;
   width: 600rpx;
   height: 600rpx;
 }
