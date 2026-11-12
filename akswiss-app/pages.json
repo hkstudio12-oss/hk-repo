@@ -1,0 +1,21 @@
+{
+  "pages": [
+    { "path": "pages/login/login", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
+    { "path": "pages/home/home", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
+    { "path": "pages/shop/shop", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
+    { "path": "pages/alerts/alerts", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
+    { "path": "pages/account/account", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
+    { "path": "pages/connect/connect", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
+    { "path": "pages/control/control", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } },
+    { "path": "pages/settings/settings", "style": { "navigationStyle": "custom", "backgroundColor": "#0B0C0E" } }
+  ],
+  "globalStyle": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "AK SWISS",
+    "navigationBarBackgroundColor": "#0B0C0E",
+    "backgroundColor": "#0B0C0E",
+    "backgroundColorTop": "#0B0C0E",
+    "backgroundColorBottom": "#0B0C0E"
+  }
+}

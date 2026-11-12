@@ -1,0 +1,6 @@
+{
+  "name": "akswiss-app",
+  "version": "2.0.0",
+  "description": "AK SWISS portable fridge app — rebuilt UI (uni-app, Vue 3)",
+  "private": true
+}
