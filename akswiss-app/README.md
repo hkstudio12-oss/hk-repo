@@ -75,6 +75,11 @@ That is the only change needed to leave `akssz.com` behind.
 
 ## Backend API
 
+> A ready-made PHP + MySQL implementation of everything below (plus an admin
+> dashboard to manage users, warranties and claims) lives in **`../akswiss-server/`**
+> — see `akswiss-server/DEPLOY.md` to put it on Hostinger. Set `BASE_URL` to
+> `https://yourdomain.com/api`.
+
 Implement these on your server. The app expects JSON `{ code, message, data }`
 (code `0`/`200` = success) — adjust `utils/request.js` if your shape differs.
 Auth is a bearer token returned by `/auth/login` as `data.token`.
