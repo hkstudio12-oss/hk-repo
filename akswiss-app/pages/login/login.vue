@@ -4,8 +4,8 @@
     <scroll-view scroll-y class="scroll">
       <view class="wrap">
         <view class="head">
-          <image class="logo" src="/static/logo.png" mode="aspectFit" />
-          <text class="eyebrow">AK SWISS · SINCE 1881</text>
+          <image class="wordmark" src="/static/logo-wordmark.png" mode="widthFix" />
+          <text class="eyebrow">SINCE 1881</text>
           <text class="title">Cold, wherever{{ '\n' }}the road goes.</text>
           <text class="sub">Sign in to control your fridge.</text>
         </view>
@@ -54,14 +54,11 @@
 
         <view class="or">
           <view class="rule"></view>
-          <text class="or-text">or continue with</text>
+          <text class="or-text">or</text>
           <view class="rule"></view>
         </view>
 
-        <view class="social">
-          <button class="ghost" @tap="oauth('google')">Google</button>
-          <button class="ghost" @tap="oauth('apple')">Apple</button>
-        </view>
+        <button class="guest" @tap="guestLogin">Continue as guest</button>
 
         <view class="foot">
           <text class="foot-text">New here? </text>
@@ -110,9 +107,11 @@ export default {
         this.loading = false
       }
     },
-    oauth(provider) {
-      // Hook up native Google/Apple sign-in here, then call api.googleLogin / api.appleLogin.
-      this.toast(provider + ' sign-in not configured yet')
+    guestLogin() {
+      try {
+        uni.setStorageSync('ak_guest', '1')
+      } catch (e) {}
+      uni.reLaunch({ url: '/pages/home/home' })
     },
     forgot() {
       uni.navigateTo({ url: '/pages/reset/reset' })
@@ -144,12 +143,9 @@ export default {
   margin-top: 40rpx;
   margin-bottom: 56rpx;
 }
-.logo {
-  width: 128rpx;
-  height: 128rpx;
-  border-radius: 36rpx;
-  background-color: #ffffff;
-  margin-bottom: 40rpx;
+.wordmark {
+  width: 320rpx;
+  margin-bottom: 36rpx;
 }
 .eyebrow {
   display: block;
@@ -294,15 +290,10 @@ export default {
   color: #8b8f96;
   margin: 0 20rpx;
 }
-.social {
-  display: flex;
-  flex-direction: row;
-}
-.ghost {
-  flex: 1;
-  height: 100rpx;
-  border-radius: 28rpx;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.guest {
+  height: 104rpx;
+  border-radius: 52rpx;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   background-color: #15171a;
   color: #f4f1ea;
   font-size: 30rpx;
@@ -310,9 +301,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.ghost:first-child {
-  margin-right: 20rpx;
 }
 .foot {
   margin-top: 56rpx;

@@ -8,10 +8,10 @@
         <view class="profile">
           <view class="avatar"><text class="initial">{{ initial }}</text></view>
           <view class="pinfo">
-            <text class="pname">{{ profile.name || 'Your name' }}</text>
-            <text class="pmail">{{ profile.email || 'you@example.com' }}</text>
+            <text class="pname">{{ isGuest ? 'Guest' : (profile.name || 'Your name') }}</text>
+            <text class="pmail">{{ isGuest ? 'Not signed in' : (profile.email || 'you@example.com') }}</text>
           </view>
-          <text class="edit">Edit ›</text>
+          <text class="edit">{{ isGuest ? '' : 'Edit ›' }}</text>
         </view>
 
         <text class="section">Warranty</text>
@@ -61,7 +61,7 @@
           </view>
         </view>
 
-        <button class="signout" @tap="signOut">Sign out</button>
+        <button class="signout" @tap="signOut">{{ isGuest ? 'Sign in / Create account' : 'Sign out' }}</button>
       </view>
     </scroll-view>
 
@@ -70,14 +70,15 @@
 </template>
 
 <script>
-import { api, clearToken } from '@/utils/request.js'
+import { api, clearToken, getToken } from '@/utils/request.js'
 
 export default {
   data() {
-    return { statusBar: 20, profile: {}, warrantyCount: 0 }
+    return { statusBar: 20, profile: {}, warrantyCount: 0, isGuest: false }
   },
   computed: {
     initial() {
+      if (this.isGuest) return 'G'
       const n = this.profile.name || this.profile.email || 'A'
       return n.trim().charAt(0).toUpperCase()
     },
@@ -85,6 +86,7 @@ export default {
   onLoad() {
     try {
       this.statusBar = uni.getSystemInfoSync().statusBarHeight || 20
+      this.isGuest = uni.getStorageSync('ak_guest') === '1' && !getToken()
     } catch (e) {}
   },
   onShow() {
@@ -112,6 +114,13 @@ export default {
       uni.showToast({ title: 'Coming soon', icon: 'none' })
     },
     signOut() {
+      if (this.isGuest) {
+        try {
+          uni.removeStorageSync('ak_guest')
+        } catch (e) {}
+        uni.reLaunch({ url: '/pages/login/login' })
+        return
+      }
       uni.showModal({
         title: 'Sign out',
         content: 'Are you sure you want to sign out?',
@@ -119,6 +128,9 @@ export default {
         success: (r) => {
           if (r.confirm) {
             clearToken()
+            try {
+              uni.removeStorageSync('ak_guest')
+            } catch (e) {}
             uni.reLaunch({ url: '/pages/login/login' })
           }
         },

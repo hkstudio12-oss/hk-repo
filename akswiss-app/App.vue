@@ -3,9 +3,13 @@ import { getToken } from '@/utils/request.js'
 
 export default {
   onLaunch() {
-    // Route to the right first screen based on auth state.
+    // Route to the right first screen based on auth / guest state.
     const token = getToken()
-    const target = token ? '/pages/home/home' : '/pages/login/login'
+    let guest = false
+    try {
+      guest = uni.getStorageSync('ak_guest') === '1'
+    } catch (e) {}
+    const target = token || guest ? '/pages/home/home' : '/pages/login/login'
     uni.reLaunch({ url: target })
   },
 }
