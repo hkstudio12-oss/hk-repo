@@ -12,6 +12,14 @@
     "splashscreen": { "alwaysShowBeforeRender": true, "waiting": true, "autoclose": true, "delay": 0 },
     "modules": { "Bluetooth": {} },
     "distribute": {
+      "icons": {
+        "android": {
+          "hdpi": "static/icons/72.png",
+          "xhdpi": "static/icons/96.png",
+          "xxhdpi": "static/icons/144.png",
+          "xxxhdpi": "static/icons/192.png"
+        }
+      },
       "android": {
         "minSdkVersion": 21,
         "targetSdkVersion": 34,
