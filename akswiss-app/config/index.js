@@ -7,8 +7,8 @@
  * app works unchanged.
  */
 
-// TODO: replace with your own backend base URL (https strongly recommended).
-export const BASE_URL = 'https://api.example.com'
+// Your live backend on Hostinger.
+export const BASE_URL = 'https://akswiss.com/api'
 
 // Where product / content images are served from on your backend.
 export const STORAGE_URL = BASE_URL + '/storage/'
