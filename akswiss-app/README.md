@@ -22,6 +22,7 @@ Built so you can move **off the old developer entirely**:
 | Connect | `pages/connect/connect.vue` | BLE scan + connect |
 | Control | `pages/control/control.vue` | the core — **draggable** temperature dial, set temp, modes, power, °C/°F |
 | Register | `pages/register/register.vue` | create account, then warranty popup |
+| Reset password | `pages/reset/reset.vue` | email + code + new password |
 | Warranty | `pages/warranty/warranty.vue` | scan/enter serial to register warranty |
 | Device settings | `pages/settings/settings.vue` | name, battery protection, schedule, light/fan |
 | Alerts | `pages/alerts/alerts.vue` | fault + status notifications |

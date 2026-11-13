@@ -115,7 +115,7 @@ export default {
       this.toast(provider + ' sign-in not configured yet')
     },
     forgot() {
-      this.toast('Password reset coming soon')
+      uni.navigateTo({ url: '/pages/reset/reset' })
     },
     register() {
       uni.navigateTo({ url: '/pages/register/register' })
