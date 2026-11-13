@@ -23,7 +23,15 @@
           "<uses-permission android:name=\"android.permission.INTERNET\"/>"
         ]
       },
-      "ios": {},
+      "ios": {
+        "dSYMs": false,
+        "privacyDescription": {
+          "NSBluetoothAlwaysUsageDescription": "AK SWISS uses Bluetooth to connect to and control your fridge.",
+          "NSBluetoothPeripheralUsageDescription": "AK SWISS uses Bluetooth to connect to and control your fridge.",
+          "NSCameraUsageDescription": "Used to scan your warranty QR or barcode.",
+          "NSLocationWhenInUseUsageDescription": "Location access is required by iOS to scan for nearby Bluetooth devices."
+        }
+      },
       "sdkConfigs": {}
     }
   },
