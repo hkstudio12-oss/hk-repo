@@ -12,6 +12,24 @@ https://yourdomain.com/api     ← app points here (BASE_URL)
 https://yourdomain.com/admin   ← you log in here
 ```
 
+## Fast path: the web installer (recommended)
+
+Instead of editing files by hand (steps 2 & 4 below), you can use the one-page
+installer:
+
+1. Create the MySQL database + user in hPanel (step 1 below).
+2. Upload this whole folder into `public_html` (step 3 below).
+3. Open **`https://yourdomain.com/install.php`** in your browser.
+4. Fill in the database details and an admin username/password → **Install**.
+   It tests the connection, creates the tables, and writes `core/config.php`
+   (with a random `JWT_SECRET`) for you.
+5. **Delete `install.php`** from the server afterwards.
+6. Turn on SSL (step 5) and point the app at `/api` (step 6).
+
+The manual steps below do the same thing by hand if you prefer.
+
+---
+
 ## 1. Create the database (hPanel)
 
 1. hPanel → **Databases → MySQL Databases**.
