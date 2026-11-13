@@ -18,7 +18,7 @@
         <view class="ring r1"></view>
         <view class="ring r2"></view>
         <view class="ring r3"></view>
-        <view class="radar-core"><image class="bt-ic" src="/static/logo.png" mode="aspectFit" /></view>
+        <view class="radar-core"><image class="bt-ic" src="/static/logo-mark.png" mode="aspectFit" /></view>
       </view>
 
       <view class="found-head">
