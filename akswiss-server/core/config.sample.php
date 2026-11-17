@@ -28,6 +28,14 @@ define('ADMIN_PASS', 'change-this-admin-password');
 define('MAIL_FROM', 'no-reply@yourdomain.com');
 define('MAIL_FROM_NAME', 'AK SWISS');
 
+// SMTP (recommended for reliable delivery to Gmail etc). Create a mailbox on
+// your domain first, then fill these. Leave SMTP_HOST empty to use PHP mail().
+define('SMTP_HOST', 'smtp.hostinger.com');
+define('SMTP_PORT', 465);
+define('SMTP_SECURE', 'ssl');            // 'ssl' for 465, 'tls' for 587
+define('SMTP_USER', 'no-reply@yourdomain.com'); // the mailbox address
+define('SMTP_PASS', 'your-mailbox-password');
+
 // Testing only: when true, /auth/send-code returns the code in the response
 // so you can test sign-up without email delivery. MUST be false in production.
 define('DEV_RETURN_CODE', false);
